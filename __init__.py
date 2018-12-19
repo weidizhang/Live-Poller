@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from . import respond
 
 def create_app(test_config = None):
     app = Flask(__name__, instance_relative_config = True)
@@ -20,6 +21,4 @@ def create_app(test_config = None):
     return app
 
 def define_routes(app):
-    @app.route("/")
-    def index():
-        return "TODO"
+    app.register_blueprint(respond.bp)
