@@ -1,0 +1,26 @@
+body
+{
+    margin-top: 20px;
+}
+
+.poll-answer-choice
+{
+    width: 100%;
+    height: 40px;
+
+    border-radius: 15px;
+    background-color: #AAB6A4;
+
+    margin-top: 10px !important;
+    padding-top: 7px;
+}
+
+.poll-answer-choice:hover
+{
+    background-color: #9FAB99;
+}
+
+.answer-row
+{
+    margin: 0 auto;
+}
