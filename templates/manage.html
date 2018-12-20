@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <table class="table table-striped table-bordered">
+        <thead>
+            <th>Poll Question</th>
+            <th>Created</th>
+            <th>Closes</th>
+            <th>Responses</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="5" class="text-center">There are no active polls</td>
+            </tr>
+            <tr>
+                <td><b>????</b></td>
+                <td>1/1/2019 9:54pm</td>
+                <td class="table-success">1/2/2019 9:00pm (xx hours remaining)</td>
+                <td>5</td>
+                <td>some action links/buttons</td>
+            </tr>
+            <tr>
+                <td colspan="5" class="text-center">
+                    <a class="btn btn-primary" href="#">Create New Poll</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

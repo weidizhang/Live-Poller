@@ -2,25 +2,21 @@ from flask import Blueprint, render_template, request
 
 bp = Blueprint("respond", __name__, url_prefix = "/respond")
 
+def get_poll_id():
+    poll_id = request.args.get("id")
+    if poll_id:
+        # check it is valid
+        return poll_id
+    return False
+
+def render_error(msg = "The poll you are trying to vote on was not found."):
+    return render_template("error.html", message = msg)
+
 @bp.route("/vote", methods=("GET", "POST"))
 def respond():
-    poll_id = request.args.get("id")
-
-    error = False
-    if poll_id:
-        try:
-            poll_id = int(poll_id)
-        except ValueError:
-            error = True
-
-        # check if valid poll id
-        print(poll_id)
-        # todo
-    else:
-        error = True
-
-    if error:
-        return render_template("error.html", message = "The poll you are trying to vote on was not found.")
+    poll_id = get_poll_id()
+    if not poll_id:
+        return render_error()
 
     if request.method == "POST":
         pass
@@ -29,4 +25,8 @@ def respond():
 
 @bp.route("/results")
 def results():
-    pass
+    poll_id = get_poll_id()
+    if not poll_id:
+        return render_error()
+
+    # generate results

@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask
-from . import respond
+from . import respond, manage
 
 def create_app(test_config = None):
     app = Flask(__name__, instance_relative_config = True)
@@ -22,3 +22,4 @@ def create_app(test_config = None):
 
 def define_routes(app):
     app.register_blueprint(respond.bp)
+    app.register_blueprint(manage.bp)
