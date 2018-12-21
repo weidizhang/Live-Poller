@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask
-from . import index, respond, manage
+from . import page_index, page_respond, page_manage
 
 def create_app(test_config = None):
     app = Flask(__name__, instance_relative_config = True)
@@ -21,6 +21,6 @@ def create_app(test_config = None):
     return app
 
 def define_routes(app):
-    app.register_blueprint(index.bp)
-    app.register_blueprint(respond.bp)
-    app.register_blueprint(manage.bp)
+    app.register_blueprint(page_index.bp)
+    app.register_blueprint(page_respond.bp)
+    app.register_blueprint(page_manage.bp)
