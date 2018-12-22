@@ -4,5 +4,9 @@
     <div class="text-center">
         <h1>Oops!</h1>
         <p>{{ message }}</p>
+        
+        {% if go_back %}
+            <a href="#" onClick="window.history.back()" class="btn btn-primary">Take Me Back</a>
+        {% endif %}
     </div>
 {% endblock %}

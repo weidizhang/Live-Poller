@@ -1,32 +1,44 @@
 from flask import Blueprint, render_template, request
+from .poll_db import PollDB
 
 bp = Blueprint("respond", __name__, url_prefix = "/respond")
+pdb = PollDB()
 
-def get_poll_id():
+def get_poll():
     poll_id = request.args.get("id")
     if poll_id:
-        # check it is valid
-        return poll_id
+        poll = pdb.get_by_id(poll_id)
+        if not poll.is_empty():
+            return poll
+
     return False
 
-def render_error(msg = "The poll you are trying to vote on was not found."):
-    return render_template("error.html", message = msg)
+def render_error(msg = "The poll you are trying to vote on was not found.", back = False):
+    return render_template("error.html", message = msg, go_back = back)
 
 @bp.route("/vote", methods=("GET", "POST"))
-def respond():
-    poll_id = get_poll_id()
-    if not poll_id:
+def vote():
+    poll = get_poll()
+    if not poll:
         return render_error()
+    if poll.is_closed():
+        pass # to do: redirect to results page
 
     if request.method == "POST":
-        pass
+        choice = request.form.get("choice")
+        if not choice or not poll.is_valid_choice(choice):
+            return render_error("You did not submit a valid response for the poll.", True)
 
-    return render_template("respond.html")
+        # process vote after session check
+
+    return render_template("respond.html",
+        id = poll.id(), question = poll.question(), choices = poll.choices(), enumerate = enumerate
+    )
 
 @bp.route("/results")
 def results():
-    poll_id = get_poll_id()
-    if not poll_id:
+    poll = get_poll()
+    if not poll:
         return render_error()
 
     # generate results
