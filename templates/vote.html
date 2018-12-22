@@ -5,11 +5,11 @@
         <h2>{{ question }}</h2>
         <br>
 
-        {% for choice in enumerate(choices, 1) %}
+        {% for choice in choices %}
             <div class="answer-row w-75">
                 <form method="POST" action="{{ url_for('respond.vote', id = id) }}">
-                    <input type="hidden" name="choice" value="{{ choice[0] }}">
-                    <input type="submit" class="btn btn-info poll-answer-choice" value="{{ choice[1] }}">
+                    <input type="hidden" name="choice" value="{{ loop.index }}">
+                    <input type="submit" class="btn btn-info poll-answer-choice" value="{{ choice }}">
                 </form>
             </div>
         {% endfor %}

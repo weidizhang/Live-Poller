@@ -32,7 +32,7 @@ def vote():
         # process vote after session check
 
     return render_template("vote.html",
-        id = poll.id(), question = poll.question(), choices = poll.choices(), enumerate = enumerate
+        id = poll.id(), question = poll.question(), choices = poll.choices()
     )
 
 @bp.route("/results")
