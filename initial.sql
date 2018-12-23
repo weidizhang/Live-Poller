@@ -4,10 +4,5 @@ CREATE TABLE IF NOT EXISTS `polls` (
     `Created` INTEGER,
     `Closes` INTEGER,
     `Choices` TEXT,
-    `NumChoices` INTEGER
-);
-
-CREATE TABLE IF NOT EXISTS `responses` (
-    `PollID` TEXT,
-    `Responses` TEXT
+    `Responses`	TEXT
 );

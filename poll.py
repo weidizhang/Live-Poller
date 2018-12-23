@@ -31,7 +31,13 @@ class Poll:
         return json.loads(self._data[4])
 
     def num_choices(self):
-        return self._data[5]
+        return len(self.choices())
+
+    def responses(self):
+        return json.loads(self._data[5])
+
+    def num_responses(self):
+        return sum(x for x in self.responses().values())
 
     def is_valid_choice(self, choice):
         try:

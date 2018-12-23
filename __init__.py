@@ -1,26 +1,23 @@
 import os
 
 from flask import Flask
-from . import page_index, page_respond, page_manage
+from datetime import datetime
 
-def create_app(test_config = None):
-    app = Flask(__name__, instance_relative_config = True)
-    #app.config.from_mapping()
+from . import config, page_index, page_respond, page_manage
 
-    if test_config is None:
-        app.config.from_pyfile("config.py", silent = True)
-    else:
-        app.config.from_mapping(test_config)
-
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
+def create_app():
+    app = Flask(__name__)
 
     define_routes(app)
+    define_filters(app)
     return app
 
 def define_routes(app):
     app.register_blueprint(page_index.bp)
     app.register_blueprint(page_respond.bp)
     app.register_blueprint(page_manage.bp)
+
+def define_filters(app):    
+    @app.template_filter()
+    def format_timestamp(ts):
+        return datetime.fromtimestamp(ts).strftime(config.settings["time_format"])

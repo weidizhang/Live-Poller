@@ -16,7 +16,7 @@ def get_poll():
 def render_error(msg = "The poll you are trying to vote on was not found.", back = False):
     return render_template("error.html", message = msg, go_back = back)
 
-@bp.route("/vote", methods=("GET", "POST"))
+@bp.route("/vote", methods = ("GET", "POST"))
 def vote():
     poll = get_poll()
     if not poll:
