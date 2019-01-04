@@ -21,7 +21,10 @@ function openPage(page)
 
 function openPageAction(action)
 {
-    const $form = $('<form method="POST" action="action"><input type="hidden" name="type" value="' + action + '"></form>');
+    const $form = $('<form method="POST" action="./">' +
+        '<input type="hidden" name="id" value="' + getSelectedPoll() + '">' + 
+        '<input type="hidden" name="action" value="' + action + '">' +
+        '</form>');
     $("body").append($form);
     $form.submit();
 }

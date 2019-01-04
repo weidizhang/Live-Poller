@@ -5,6 +5,12 @@
 {% endblock %}
 
 {% block content %}
+    {% if message is not none %}
+        <div class="alert alert-{{ message[0] }}" role="alert">
+            {{ message[1] }}
+        </div>
+    {% endif %}
+
     <table class="table table-striped table-bordered">
         <thead>
             <th></th>
