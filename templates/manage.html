@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/manage.js') }}"></script>
+{% endblock %}
+
 {% block content %}
     <table class="table table-striped table-bordered">
         <thead>
@@ -17,7 +21,7 @@
             {% else %}
                 {% for poll in polls %}
                     <tr>
-                        <td class="text-center"><input type="radio" value="{{ poll.id() }}"{{ ' checked' if loop.index == 1 else '' }}></td>
+                        <td class="text-center"><input type="radio" name="poll-radio" value="{{ poll.id() }}"{{ ' checked' if loop.index == 1 else '' }}></td>
                         <td><b>{{ poll.question() }}</b></td>
                         <td>{{ poll.created()|format_timestamp }}</td>
                         <td class="table-{{ 'danger' if poll.is_closed() else 'success' }}">{{ poll.closes()|format_timestamp }}</td>
@@ -28,14 +32,17 @@
 
             <tr>
                 <td colspan="5">
-                    <div class="float-left">
-                        <a href="#" class="btn btn-secondary">View Results</a>
-                        <a href="#" class="btn btn-warning">Close Now</a>
-                        <a href="#" class="btn btn-danger">Delete</a>
-                    </div>
+                    {% if polls|length > 0 %}
+                        <div class="float-left">
+                            <a href="#" class="btn btn-secondary" id="qr">Show QR Code</a>
+                            <a href="#" class="btn btn-success" id="results">View Results</a>
+                            <a href="#" class="btn btn-warning" id="close">Close Now</a>
+                            <a href="#" class="btn btn-danger" id="delete">Delete</a>
+                        </div>
+                    {% endif %}
 
                     <div class="float-right">
-                        <a class="btn btn-primary" href="#">Create New Poll</a>
+                        <a class="btn btn-primary" href="#" id="create">Create New Poll</a>
                     </div>
                 </td>
             </tr>

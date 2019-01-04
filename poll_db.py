@@ -21,3 +21,7 @@ class PollDB:
     def get_all(self):
         self._cursor.execute("SELECT * FROM polls")
         return [ Poll(x) for x in self._cursor.fetchall() ]
+
+    def delete(self, id):
+        self._cursor.execute("DELETE FROM polls WHERE ID=?", (id,))
+        return self._cursor.rowcount() > 0
