@@ -13,6 +13,7 @@ class PollDB:
     def initialize_tables(self):
         with open("initial.sql") as sql_file:
             self._cursor.executescript(sql_file.read())
+        self._conn.commit()
 
     def get_by_id(self, id):
         self._cursor.execute("SELECT * FROM polls WHERE ID=?", (id,))
@@ -24,4 +25,10 @@ class PollDB:
 
     def delete(self, id):
         self._cursor.execute("DELETE FROM polls WHERE ID=?", (id,))
-        return self._cursor.rowcount() > 0
+        self._conn.commit()
+        return self._cursor.rowcount > 0
+
+    def close(self, id):
+        self._cursor.execute("UPDATE polls SET Closes=? WHERE ID=?", (Poll.timestamp(), id))
+        self._conn.commit()
+        return self._cursor.rowcount > 0

@@ -10,7 +10,7 @@ class Poll:
         return int(time.time())
 
     def is_empty(self):
-        return len(self._data) == 0
+        return self._data is None or len(self._data) == 0
 
     def is_closed(self):
         return Poll.timestamp() >= self.closes()
