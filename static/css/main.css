@@ -14,3 +14,9 @@ body
     margin: 0 auto;
     padding-top: 7px;
 }
+
+.remove-response-input
+{
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}

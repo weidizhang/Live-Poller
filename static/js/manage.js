@@ -1,4 +1,15 @@
-$(document).ready(registerHandlers);
+$(document).ready(onReady);
+
+let responseGroupHtml;
+
+function onReady()
+{
+    registerHandlers();
+    
+    const $cloneGroup = $($("#original-response-group").get(0).outerHTML);
+    $cloneGroup.removeAttr("id");
+    responseGroupHtml = $cloneGroup.get(0).outerHTML;
+}
 
 function registerHandlers()
 {
@@ -6,7 +17,15 @@ function registerHandlers()
     $("#results").click(() => openPage("respond/results"));
     $("#close").click(() => openPageAction("close"));
     $("#delete").click(() => openPageAction("delete"));
-    $("#create").click(() => openPageAction("create"));
+    $("#create").click(() => $("#create-modal").modal());
+
+    $("#add-response-box").click(() => $("#response-group").append(responseGroupHtml));
+    $(document).on("click", ".remove-response-input", function() { $(this).closest(".input-group").remove(); });
+    $("#closes").flatpickr({
+        enableTime: true,
+        minDate: "today",
+        dateFormat: "F j, Y, h:i K"
+    });
 }
 
 function getSelectedPoll()
@@ -21,6 +40,9 @@ function openPage(page)
 
 function openPageAction(action)
 {
+    if (!window.confirm("Are you sure you want to " + action + " this poll?"))
+        return;
+
     const $form = $('<form method="POST" action="./">' +
         '<input type="hidden" name="id" value="' + getSelectedPoll() + '">' + 
         '<input type="hidden" name="action" value="' + action + '">' +
