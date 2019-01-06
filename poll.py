@@ -1,5 +1,6 @@
 import json
 import time
+import uuid
 
 class Poll:
     def __init__(self, data_tuple):
@@ -8,6 +9,10 @@ class Poll:
     @staticmethod
     def timestamp():
         return int(time.time())
+
+    @staticmethod
+    def generate_id():
+        return str(uuid.uuid4())
 
     def is_empty(self):
         return self._data is None or len(self._data) == 0

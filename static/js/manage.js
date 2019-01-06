@@ -22,9 +22,11 @@ function registerHandlers()
     $("#add-response-box").click(() => $("#response-group").append(responseGroupHtml));
     $(document).on("click", ".remove-response-input", function() { $(this).closest(".input-group").remove(); });
     $("#closes").flatpickr({
+        altInput: true,
+        altFormat: "F j, Y, h:i K",
         enableTime: true,
-        minDate: "today",
-        dateFormat: "F j, Y, h:i K"
+        dateFormat: "U",
+        minDate: "today"        
     });
 }
 

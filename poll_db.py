@@ -1,3 +1,4 @@
+import json
 import sqlite3
 
 from .poll import Poll
@@ -30,5 +31,22 @@ class PollDB:
 
     def close(self, id):
         self._cursor.execute("UPDATE polls SET Closes=? WHERE ID=?", (Poll.timestamp(), id))
+        self._conn.commit()
+        return self._cursor.rowcount > 0
+
+    def create(self, question, closes, choices):
+        responses = { i : 0 for i in range(1, len(choices) + 1) }
+
+        self._cursor.execute(
+            "INSERT INTO polls VALUES (?, ?, ?, ?, ?, ?)",
+            (
+                Poll.generate_id(),
+                question,
+                Poll.timestamp(),
+                closes,
+                json.dumps(choices),
+                json.dumps(responses)
+            )
+        )
         self._conn.commit()
         return self._cursor.rowcount > 0

@@ -13,21 +13,31 @@ def verify_can_manage():
         abort(403)
 
 def handle_action(id, action):
-    if id and action:
-        poll = pdb.get_by_id(id)
-        if poll.is_empty():
-            return ("danger", "The poll you are trying to manage was not found.")
-    
+    if ((not id and action == "create") or id) and action:
+        poll = None
+        if id:
+            poll = pdb.get_by_id(id)
+            if poll.is_empty():
+                return ("danger", "The poll you are trying to manage was not found.")
+
+        generic_success = ("success", "The poll was successfully " + action + "d.")
         generic_error = ("danger", "An error occurred trying to perform the specified action on the poll, please try again.")
 
         if action == "create":
-            return ("info", "NOT YET IMPLEMENTED") # TODO
+            question = request.form.get("question")
+            responses = request.form.getlist("responses[]")
+            closes = request.form.get("closes")
+
+            if not question or not responses or not closes or len(responses) < 1:
+                return ("danger", "One or more fields that are required to create a poll were not supplied.")
+
+            return generic_success if pdb.create(question, closes, responses) else generic_error
         elif action == "close":
             if poll.is_closed():
                 return ("danger", "The poll you are trying to close is already closed.")
-            return ("success", "The poll was successfully closed.") if pdb.close(poll.id()) else generic_error
+            return generic_success if pdb.close(poll.id()) else generic_error
         elif action == "delete":
-            return ("success", "The poll was successfully deleted.") if pdb.delete(poll.id()) else generic_error
+            return generic_success if pdb.delete(poll.id()) else generic_error
     
     return None
 
