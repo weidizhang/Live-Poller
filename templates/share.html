@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="text-center">
+        <h2>{{ poll.question() }}</h2>
+        <span class="badge badge-pill badge-info">Closes {{ poll.closes()|format_timestamp }}</span>
+        <br>
+        <span class="badge badge-pill badge-primary">To access this poll, scan the QR code found below</span>
+        
+        <p>
+            <br>
+            <img src="{{ qrcode(base + poll.id(), box_size = 12) }}">
+        </p>
+    </div>
+{% endblock %}
