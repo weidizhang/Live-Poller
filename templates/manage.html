@@ -31,7 +31,7 @@
                 {% for poll in polls %}
                     <tr>
                         <td class="text-center"><input type="radio" name="poll-radio" value="{{ poll.id() }}"{{ ' checked' if loop.index == 1 else '' }}></td>
-                        <td><b>{{ poll.question() }}</b></td>
+                        <td><b><a href="{{ url_for('respond.vote', id = poll.id()) }}" target="_blank">{{ poll.question() }}</a></b></td>
                         <td>{{ poll.created()|format_timestamp }}</td>
                         <td class="table-{{ 'danger' if poll.is_closed() else 'success' }}">{{ poll.closes()|format_timestamp }}</td>
                         <td>{{ poll.num_responses() }}</td>
