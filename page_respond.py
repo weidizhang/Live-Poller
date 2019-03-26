@@ -1,4 +1,5 @@
 from flask import Blueprint, redirect, render_template, request, session, url_for
+from .poll import Poll
 from .poll_db import PollDB
 
 bp = Blueprint("respond", __name__, url_prefix = "/respond")
@@ -48,10 +49,21 @@ def results():
     if not poll:
         return render_error()
 
-    return render_template("results.html", 
-        question = poll.question(), choices = poll.choices(), responses = poll.responses(), closes = poll.closes(),
-        sum = sum, round = round, int = int,
+    return render_template("results.html",
+        poll = poll,
         success = request.args.get("success"),
         already_voted = request.args.get("already_voted"),
         closed = request.args.get("closed")
+    )
+
+@bp.route("/results-ajax")
+def results_ajax():
+    poll = get_poll()
+    if not poll:
+        return render_error()
+
+    return render_template("results-ajax.html",
+        poll = poll,
+        time = Poll.timestamp(),
+        sum = sum, round = round, int = int
     )

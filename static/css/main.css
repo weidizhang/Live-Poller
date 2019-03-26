@@ -32,6 +32,11 @@ body
     text-align: left;
 }
 
+#updating-text
+{
+    display: none;
+}
+
 #share-poll
 {
     color: white;

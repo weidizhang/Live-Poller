@@ -1,0 +1,21 @@
+<h2>{{ poll.question() }}</h2>
+<span class="badge badge-pill badge-info">Close{{ "s" if poll.closes() > time else "d" }} {{ poll.closes()|format_timestamp }}</span>
+<br>
+{% set choices = poll.choices() %}
+{% set responses = poll.responses() %}
+{% set total_responses = sum(responses.values()) %}
+
+{% for response_id, count in responses.items() %}
+    <div class="answer-row w-75">
+        <div class="response-title">{{ choices[int(response_id) - 1] }}</div>
+        <div class="progress">
+            {% set percentage = 0.0 if total_responses == 0 else round(count / total_responses * 100, 1) %}
+            {% set additional_style = " color: black; margin-left: 10px;" if count == 0 else "" %}
+            <div class="progress-bar" role="progressbar" style="width: {{ percentage }}%;{{ additional_style }}" aria-valuenow="{{ percentage }}" aria-valuemin="0" aria-valuemax="100">
+                {{ count }} vote{{ "s" if count != 1 else "" }} ({{ percentage }}%)
+            </div>
+        </div>
+    </div>
+{% endfor %}
+<br>
+<small>Total Responses: <strong>{{ total_responses }}</strong></small>
