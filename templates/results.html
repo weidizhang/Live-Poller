@@ -2,7 +2,12 @@
 
 {% block content %}
     <div class="text-center">
+        {% if success %}<div class="alert alert-primary" role="alert">Thank you, your response has been recorded.</div>{% endif %}
+        {% if already_voted %}<div class="alert alert-danger" role="alert">You already submitted a response for this poll.</div>{% endif %}
+        {% if closed %}<div class="alert alert-danger" role="alert">The poll you are trying to vote on is already closed.</div>{% endif %}
+
         <h2>{{ question }}</h2>
+        <span class="badge badge-pill badge-info">Closes {{ closes|format_timestamp }}</span>
         <br>
         {% set total_responses = sum(responses.values()) %}
         {% for response_id, count in responses.items() %}

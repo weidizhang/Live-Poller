@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, session
+from flask import Blueprint, redirect, render_template, request, session, url_for
 from .poll_db import PollDB
 
 bp = Blueprint("respond", __name__, url_prefix = "/respond")
@@ -22,7 +22,7 @@ def vote():
     if not poll:
         return render_error()
     if poll.is_closed():
-        pass # to do: redirect to results page
+        return redirect(url_for("respond.results", id = poll.id(), closed = 1))
 
     if request.method == "POST":
         choice = request.form.get("choice")
@@ -30,13 +30,13 @@ def vote():
             return render_error("You did not submit a valid response for the poll.", True)
 
         if poll.id() in session:
-            return render_error("You already submitted a response for this poll.")
+            return redirect(url_for("respond.results", id = poll.id(), already_voted = 1))
 
         if not pdb.add_response(poll.id(), choice):
-            return render_error("An error occurred trying to submit your response for the poll, please try again.")
+            return render_error("An error occurred trying to submit your response for the poll, please try again.", True)
 
         session[poll.id()] = True
-        # to do: redirect to results page with success message
+        return redirect(url_for("respond.results", id = poll.id(), success = 1))
 
     return render_template("vote.html",
         id = poll.id(), question = poll.question(), choices = poll.choices()
@@ -49,6 +49,9 @@ def results():
         return render_error()
 
     return render_template("results.html", 
-        question = poll.question(), choices = poll.choices(), responses = poll.responses(),
-        sum = sum, round = round, int = int
+        question = poll.question(), choices = poll.choices(), responses = poll.responses(), closes = poll.closes(),
+        sum = sum, round = round, int = int,
+        success = request.args.get("success"),
+        already_voted = request.args.get("already_voted"),
+        closed = request.args.get("closed")
     )
