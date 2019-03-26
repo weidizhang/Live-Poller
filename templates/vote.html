@@ -3,6 +3,10 @@
 {% block content %}
     <div class="text-center">
         <h2>{{ question }}</h2>
+        <span class="badge badge-pill badge-secondary">
+            <a href="{{ url_for('share.index', id = id) }}" id="share-poll" target="_blank">Share this poll</a>
+        </span>
+        <br>
         <br>
 
         {% for choice in choices %}

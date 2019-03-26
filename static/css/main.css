@@ -31,3 +31,9 @@ body
     margin-bottom: 5px;
     text-align: left;
 }
+
+#share-poll
+{
+    color: white;
+    text-decoration: underline;
+}
