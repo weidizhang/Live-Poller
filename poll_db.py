@@ -50,3 +50,12 @@ class PollDB:
         )
         self._conn.commit()
         return self._cursor.rowcount > 0
+
+    def add_response(self, id, choice):
+        poll = self.get_by_id(id)
+        responses = poll.responses()
+        responses[choice] += 1
+        
+        self._cursor.execute("UPDATE polls SET responses=? WHERE ID=?", (json.dumps(responses), id))
+        self._conn.commit()
+        return self._cursor.rowcount > 0

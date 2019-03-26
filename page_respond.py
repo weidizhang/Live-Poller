@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, session
 from .poll_db import PollDB
 
 bp = Blueprint("respond", __name__, url_prefix = "/respond")
@@ -29,7 +29,14 @@ def vote():
         if not choice or not poll.is_valid_choice(choice):
             return render_error("You did not submit a valid response for the poll.", True)
 
-        # process vote after session check
+        if poll.id() in session:
+            return render_error("You already submitted a response for this poll.")
+
+        if not pdb.add_response(poll.id(), choice):
+            return render_error("An error occurred trying to submit your response for the poll, please try again.")
+
+        session[poll.id()] = True
+        # to do: redirect to results page with success message
 
     return render_template("vote.html",
         id = poll.id(), question = poll.question(), choices = poll.choices()
@@ -41,4 +48,7 @@ def results():
     if not poll:
         return render_error()
 
-    # generate results
+    return render_template("results.html", 
+        question = poll.question(), choices = poll.choices(), responses = poll.responses(),
+        sum = sum, round = round, int = int
+    )

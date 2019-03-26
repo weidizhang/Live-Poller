@@ -10,6 +10,7 @@ from . import config, page_index, page_respond, page_manage, page_share
 
 def create_app():
     app = Flask(__name__)
+    app.secret_key = config.settings["secret_key"]
 
     update_config()
     define_routes(app)
